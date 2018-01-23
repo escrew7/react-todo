@@ -23,4 +23,32 @@ describe('Reducers', () => {
       expect(res).toEqual(true)
     })
   })
+
+  describe('todosReducer', () => {
+    it('should add new todo', () => {
+      var action = {
+        type: 'ADD_TODO',
+        text: 'walk dog'
+      }
+      var res = reducers.todosReducer(df([]), df(action))
+      expect(res.length).toEqual(1)
+      expect(res[0].text).toEqual(action.text)
+    })
+  })
+
+  describe('todoToggle', () => {
+    it('should toggle todo completed to true', () => {
+      var action = {
+        type : 'TOGGLE_TODO',
+        id: 1234
+      }
+      var res = reducers.todosReducer(df([{
+          id: 1234,
+          completed: true,
+          completedAt: 123
+      }]), df(action))
+      expect(res[0].completed).toEqual(false)
+      expect(res[0].completedAt).toEqual(undefined)
+    })
+  })
 })
