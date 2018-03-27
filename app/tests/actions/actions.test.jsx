@@ -89,13 +89,19 @@ describe('Tests with firebase todos', () => {
   var testTodoRef;
 
   beforeEach((done) => {
-    testTodoRef = firebaseRef.child('todos').push()
+    var todosRef = firebaseRef.child('todos')
 
-    testTodoRef.set({
-      text: 'something to do',
-      completed: false,
-      createdAt: 123456
-    }).then(() => done())
+    todosRef.remove().then(() => {
+      testTodoRef = firebaseRef.child('todos').push()
+
+        return testTodoRef.set({
+              text: 'something to do',
+              completed: false,
+              createdAt: 123456
+        })
+      })
+      .then(() => done())
+      .catch(done)
   })
 
   afterEach((done) => {
@@ -123,4 +129,25 @@ describe('Tests with firebase todos', () => {
       done()
     }, done)
   })
+
+  it('should run startAddTodos and dispatch ADD_TODOS action', (done) => {
+    const store = createMockStore({})
+    const action = actions.startAddTodos()
+
+    store.dispatch(action).then(() => {
+      const mockActions = store.getActions()
+
+      expect(mockActions[0]).toInclude({
+        type: 'ADD_TODOS'
+      })
+
+      expect(mockActions[0].todos[0]).toInclude({
+        text: 'something to do'
+      })
+
+      done()
+    }, done)
+  })
+
+
 })
