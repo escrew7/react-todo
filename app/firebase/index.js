@@ -4,12 +4,10 @@ import firebase from 'firebase'
 try {
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyC72-rtOOGIEiSHlG1fI94KaFLMyYCi6oI",
-    authDomain: "reesy-todo-app.firebaseapp.com",
-    databaseURL: "https://reesy-todo-app.firebaseio.com",
-    projectId: "reesy-todo-app",
-    storageBucket: "reesy-todo-app.appspot.com",
-    messagingSenderId: "60390118392"
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    databaseURL: process.env.DATABASE_URL,
+    storageBucket: process.env.STORAGE_BUCKET,
   };
   firebase.initializeApp(config);
 } catch (e) {
