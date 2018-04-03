@@ -1,4 +1,4 @@
-import firebase, {firebaseRef} from 'app/firebase/'
+import firebase, {firebaseRef, githubProvider} from 'app/firebase/'
 import moment from 'moment'
 
 
@@ -62,13 +62,8 @@ export var startAddTodos = () => {
           ...todos[todoId]
         })
       })
-
       dispatch(addTodos(parsedTodos))
     })
-
-
-
-
   }
 
 }
@@ -88,8 +83,26 @@ export var startToggleTodo = (id, completed) => {
       completed,
       completedAt: completed ? moment().unix() : null
     }
-  return todoRef.update(updates).then(() => {
+    return todoRef.update(updates).then(() => {
     dispatch(updateTodo(id, updates))
-  })
+    })
+  }
 }
+
+export var startLogin = () => {
+  return (dispatch, getState) => {
+    return firebase.auth().signInWithPopup(githubProvider).then((result) => {
+      console.log('auth worked!', result)
+    }, (error) => {
+      console.log('auth failed', result)
+    })
+  }
+}
+
+export var startLogout = () => {
+  return (dispatch, getState) => {
+    return firebase.auth().signOut().then(() => {
+      console.log('logged out')
+    })
+  }
 }
