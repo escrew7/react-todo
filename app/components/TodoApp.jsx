@@ -7,7 +7,7 @@ import AddTodo from 'AddTodo'
 import TodoSearch from 'TodoSearch'
 
 
-var TodoApp = React.createClass({
+export var TodoApp = React.createClass({
   onLogout(e) {
     var {dispatch} = this.props
     e.preventDefault()

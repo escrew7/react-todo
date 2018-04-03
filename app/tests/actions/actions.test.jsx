@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 var expect = require('expect')
 import firebase, {firebaseRef} from 'app/firebase'
 var actions = require('actions')
+var reducers = require('reducers')
 
 var createMockStore = configureMockStore([thunk])
 
@@ -148,6 +149,49 @@ describe('Tests with firebase todos', () => {
       done()
     }, done)
   })
+})
+
+describe('Authenticate', () => {
+  it('should generate Login action', () => {
+    var action = {
+      type: 'LOGIN',
+      uid: '1234abc'
+    }
+    var res = actions.login(action.uid)
+    expect(res).toEqual(action)
+  })
+
+  it('should generate Logout action', () => {
+    var action = {
+      type: 'LOGOUT'
+    }
+    var res = actions.logout(action.id)
+    expect(res).toEqual(action)
+  })
+})
 
 
+describe('authReducer', () => {
+  it('should store uid on LOGIN', () => {
+    const action = {
+      type: 'LOGIN',
+      uid:'123abc'
+    }
+    const res = reducers.authReducer(undefined, action)
+    expect(res).toEqual({
+      uid: action.uid
+    })
+  })
+
+  it('should clear uid on LOGOUT', () => {
+    var authData = {
+      uid: '123abc'
+    }
+
+    const action = {
+      type: 'LOGOUT'
+    }
+    const res = reducers.authReducer(authData, action)
+    expect(res).toEqual({})
+  })
 })
